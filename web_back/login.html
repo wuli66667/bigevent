@@ -23,14 +23,49 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input id="userName" type="text" class="input_txt" placeholder="邮箱/手机号">
+                <input id="password" type="text" class="input_pass" placeholder="密码">
+                <!-- <input type="submit" class="input_sub" value="登 录"> -->
+    <script src=""></script>
+                <button type="button" class="input_sub" id="btnLogin">登陆</button>
             </form>
         </div>
 
     </div> 
 
+    <script src="./lib/jquery-1.12.4.min.js"></script>
+    <script>
+        // 点击添加事件
+        $('#btnLogin').click(function(){
+            // 获取用户名和密码内容
+            // 拿变量
+            var userName = $('#userName').val();
+            var password = $('#password').val();
+            // console.log(userName,password);
+
+        // 判断用户名和密码不能为空
+            if(userName === '' || password === ''){
+                alert('内容不能为空');
+                return
+            }
+            // ajax请求
+            $.post('http://localhost:8000/admin/login',{
+                user_name : userName,
+                password : password
+            },function(res){
+                console.log(res);
+                if(res.code == 200){
+                    alert('ok');
+                }else{
+                    alert(res.msg);
+                }
+                
+            });
+        })  
+    
+    
+    
+    </script>
 </body>
 
 </html>
