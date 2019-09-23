@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -55,6 +56,7 @@
 
     <script src="./lib/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/uti.js"></script>
     <script>
         // 点击添加事件
         $('#btnLogin').click(function(){
@@ -67,16 +69,15 @@
         // 判断用户名和密码不能为空
             if(userName === '' || password === ''){
                 $('#pResult').text('用户名和密码不能为空');
-                    $('.modal').modal('show')
+                    $('.modal').modal('show');
                 // alert('内容不能为空');
                 return
-            }
-            // ajax请求
-            $.post('http://localhost:8000/admin/login',{
-                user_name : userName,
-                password : password
-            },function(res){
-                console.log(res);
+            };
+            // 调用方法
+            // 用户登陆
+            user.login(userName,password,function(res){ //res是响应体,是$.post
+                // alert('ajax操作成功之后执行');
+                // console.log(res);
                 if(res.code == 200){
                     // 页面跳转
                     window.location.href = './index.html';
@@ -86,8 +87,8 @@
                     $('#pResult').text(res.msg);
                     $('.modal').modal('show')
                 }
-                
             });
+            // 此处之前的$.post请求放到了uti.js文件中
         })  
     
     
