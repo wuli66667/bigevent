@@ -7,7 +7,10 @@ var user =  {
      */
     login : function(userName,password,callBack){
         // alert('user login');
-        $.post('http://localhost:8000/admin/login',{
+        $.post(
+            // urList.user_login,
+            'http://localhost:8000/admin/login',
+            {
                 user_name : userName,
                 password : password
             },function(res){
@@ -20,9 +23,12 @@ var user =  {
      * @param {*} callBack 
      */
     logout : function(callBack){
-        $.post('http://localhost:8000/admin/logout',function(res){
+        $.post(
+            urList.user_logout,
+            // 'http://localhost:8000/admin/logout',
+            function(res){
             callBack(res);
-        })
+        });
     },
 
     // 获取个人信息
@@ -31,7 +37,10 @@ var user =  {
      * @param {*} callBack 
      */
     getInfo : function(callBack){
-        $.get('http://localhost:8000/admin/getuser',function(res){
+        $.get(
+            urList.user_getInfo,
+            // 'http://localhost:8000/admin/getuser',
+            function(res){
             callBack(res);
         })
     }

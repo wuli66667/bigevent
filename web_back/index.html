@@ -123,20 +123,23 @@
         }
 
     </script>
-
+    
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/conFi.js"></script>
     <script src="./js/utils/uti.js"></script>
+    
     <script>
     // 入口函数 更改图片信息
     $(function() {
         user.getInfo(function(res) {
-          console.log(res);
+        //   console.log(res);
           if (res.code === 200) {
             $('#userName').text(res.data.nickname);
             $('#userImg').prop('src', res.data.user_pic);
           }
         });
       });
+      
 
         // 用户退出点击事件
         $('#btnLogout').click(function(){
