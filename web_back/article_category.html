@@ -130,12 +130,22 @@
               }
           })      
       </script>
-
+    
+    <!-- 引入js文件 -->
+    <script src="./js/utils/category.js"></script>
+    <script src="./js/utils/conFi.js"></script>
       <script>
         //   入口函数
         $(function(){
-
-        })
+            category.show(function(res){
+                console.log(res);
+                if(res.code === 200){
+                    // 1要把red.data转成表格中的行
+                    
+                }
+                
+            });    
+        });
 
       </script>
 
