@@ -28,8 +28,8 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="tableContent">
+                    <!-- <tr>
                         <td>未分类</td>
                         <td>uncategorized</td>
                         <td class="text-center">
@@ -67,7 +67,7 @@
                                 class="btn btn-info btn-xs">编辑</a>
                             <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
                 <tfoot>
                     <tr>
@@ -134,6 +134,22 @@
     <!-- 引入js文件 -->
     <script src="./js/utils/category.js"></script>
     <script src="./js/utils/conFi.js"></script>
+    <script src="./lib/template-web.js"></script>
+    <script id="tmp" type="text/html">
+      <!-- {{msg}} -->
+        {{each data item}}
+           <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.slug}}</td>
+            <td class="text-center">
+                <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
+                    class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+            </td>
+          </tr>
+       {{/each}}
+    </script>
+
       <script>
         //   入口函数
         $(function(){
@@ -141,12 +157,13 @@
                 console.log(res);
                 if(res.code === 200){
                     // 1要把red.data转成表格中的行
-                    
+                    // 2 模板引擎 引入JS文件
+                    var htmlSter = template('tmp', res);
+                    $('#tableContent').html(htmlSter);
+                    console.log(htmlSter);
                 }
-                
             });    
         });
-
       </script>
 
 </body>
