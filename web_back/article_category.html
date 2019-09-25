@@ -90,12 +90,16 @@
             <div class="modal-body">
               <form>
                 <div class="form-group">
-                  <label for="recipient-name" class="control-label">分类名称:</label>
-                  <input type="text" class="form-control" id="recipient-name">
+                  <label for="categoryName" class="control-label">分类名称:</label>
+                  <input type="text" class="form-control" id="categoryName">
                 </div>
                 <div class="form-group">
-                  <label for="message-text" class="control-label">分类别名:</label>
-                  <input type="text" class="form-control" id="recipient-name">
+                  <label for="categorySlug" class="control-label">分类别名:</label>
+                  <input type="text" class="form-control" id="categorySlug">
+                </div>
+                <!-- 提示不能为空框 -->
+                <div class="alert alert-danger" role="alert" id="divResult">
+                  Content
                 </div>
               </form>
             </div>
@@ -118,10 +122,10 @@
             $('#addModal').modal('hide');
           });
 
-          $('#model_add').click(function(){
-            alert('add');
-            $('#addModal').modal('hide');
-          });
+          // $('#model_add').click(function(){
+          //   alert('add');
+          //   $('#addModal').modal('hide');
+          // });
 
           $('.category_table').delegate('a','click',function(){
               if($(this).hasClass('btn-info')){
@@ -151,9 +155,9 @@
     </script>
 
       <script>
-        //   入口函数
-        $(function(){
-            category.show(function(res){
+        // 方法
+        function doQuery(){
+          category.show(function(res){
                 console.log(res);
                 if(res.code === 200){
                     // 1要把red.data转成表格中的行
@@ -162,7 +166,45 @@
                     $('#tableContent').html(htmlSter);
                     console.log(htmlSter);
                 }
-            });    
+          }); 
+        }
+        //   入口函数
+        $(function(){
+            doQuery();
+            // 新增事件
+            $('#model_add').click(function(){
+              // 获取用户输入
+              var Names = $('#categoryName').val();
+              var Slugs = $('#categorySlug').val();
+              console.log(Names,Slugs);
+              // 1判断用户输入内容不能为空
+              if(Names === '' || Slugs === ''){
+                $('#divResult').text('分类名和别名不能为空!');
+                return;
+              }
+
+              // 2调用方法
+              category.add(Names,Slugs,function(res){
+                // 判断
+                if(res.code === 200) {
+                  // 隐藏模态框
+                  $('#addModal').modal('hide');
+                  // 提示信息为空
+                  $('#divResult').text('');
+                  doQuery();
+                }else {
+                  $('#divResult').text(res.msg);
+                  
+                }
+                // console.log(res);
+              })
+          
+              
+        
+
+
+
+            })
         });
       </script>
 

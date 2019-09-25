@@ -4,5 +4,8 @@ var urList = {
     user_logout: BASE_URL + '/admin/logout',
     user_getInfo: BASE_URL + '/admin/getuser',
 
-    user_category: BASE_URL + '/admin/category_search'
+    // user_category: BASE_URL + '/admin/category_search',
+    // category_add: BASE_URL + '/admin/category_add'
+    category_show: BASE_URL + '/admin/category_search',
+    // category_add: BASE_URL + '/admin/category_add'
 };
