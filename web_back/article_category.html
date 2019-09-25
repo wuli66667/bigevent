@@ -72,7 +72,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-center">
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addModal">新增分类</a>
+                            <a href="#" id="showAddModel" class="btn btn-success" data-toggle="modal" data-target="#addModal">新增分类</a>
                         </td>
                     </tr>
                 </tfoot>
@@ -92,6 +92,7 @@
                 <div class="form-group">
                   <label for="categoryName" class="control-label">分类名称:</label>
                   <input type="text" class="form-control" id="categoryName">
+                  <input type="hidden" class="form-control" id="categoryId">
                 </div>
                 <div class="form-group">
                   <label for="categorySlug" class="control-label">分类别名:</label>
@@ -105,6 +106,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" id="model_shutoff">关闭</button>
+              <button type="button" class="btn btn-primary" id="model_edit">保存修改</button>
               <button type="button" class="btn btn-primary" id="model_add">新增</button>
             </div>
           </div>
@@ -118,7 +120,7 @@
           });
 
           $('#model_shutoff').click(function(){
-            alert('shutoff');
+            // alert('shutoff');
             $('#addModal').modal('hide');
           });
 
@@ -127,12 +129,19 @@
           //   $('#addModal').modal('hide');
           // });
 
-          $('.category_table').delegate('a','click',function(){
-              if($(this).hasClass('btn-info')){
-                $('#addModal .modal-title').html('修改分类名称');
-                $('#addModal').modal('show');
-              }
-          })      
+          // $('.category_table').on('click','a',function(){
+          //     if($(this).hasClass('btn-info')){
+          //       $('#addModal .modal-title').html('修改分类名称');
+          //       $('#addModal').modal('show');
+          //     }
+          // }) 
+
+          // $('.category_table').delegate('a','click',function(){
+          //     if($(this).hasClass('btn-info')){
+          //       $('#addModal .modal-title').html('修改分类名称');
+          //       $('#addModal').modal('show');
+          //     }
+          // })      
       </script>
     
     <!-- 引入js文件 -->
@@ -146,7 +155,7 @@
             <td>{{item.name}}</td>
             <td>{{item.slug}}</td>
             <td class="text-center">
-                <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
+                <a data-name="{{item.name}}" data-slug="{{item.slug}}" data-id="{{item.id}}" href="javascript:;)"
                     class="btn btn-info btn-xs">编辑</a>
                 <a href="javascript:deleteTr( {{item.id}} );" class="btn btn-danger btn-xs">删除</a>
             </td>
@@ -185,21 +194,89 @@
             }
           })
         }
+
+        // 给添加分类添加事件,显示新增按钮模态框
+        $('#showAddModel').click(function(){
+          $('#model_edit').hide();
+          $('#model_add').show();
+          $('#addModal .modal-title').html('新增分类');
+          // 新增分类打开为空
+          $('#categoryName').val("");
+          $('#categorySlug').val("");
+          $('#divResult').hide();
+        });
+
+        // 编辑事件委托
+        // 1,把原来的信息显示出来
+        // 2.用户修改并保存
+        $('.category_table').on('click','a',function(){
+              if($(this).hasClass('btn-info')){
+                // 拿到对应填写的值
+                var name = $(this).attr('data-name');
+                var id = $(this).attr('data-id');
+                var slug = $(this).attr('data-slug');
+                // 值显示在框内
+              $('#categoryName').val(name);
+              $('#categorySlug').val(slug);
+              $('#categoryId').val(id);
+
+              //  最开始点击编辑是没有内容的
+              $('#divResult')
+                .text('')
+                .hide();
+
+              $('#addModal .modal-title').html('修改分类名称');
+              $('#addModal').modal('show');
+
+              $('#model_add').hide();//在编辑的时候新曾按钮隐藏
+              $('#model_edit').show();
+              
+              
+
+            }
+          });
         
         
         //   入口函数
         $(function(){
+
           //添加
             doQuery();
+
+          // 编辑的操作
+          $('#model_edit').click(function(){
+            // alert(1);
+              // 获取用户输入
+              var Names = $('#categoryName').val();
+              var Slugs = $('#categorySlug').val();
+              // 隐藏域
+              var id = $('#categoryId').val();
+              // console.log(Names,Slugs);
+              // 1判断用户输入内容不能为空
+              if(Names === '' || Slugs === ''){
+                $('#divResult').text('分类名和别名不能为空!');
+                return;
+              }
+              // 传参
+              category.edit(id,Names,Slugs,function(res){
+                if(res.code === 200){
+                  // 隐藏模态框
+                  $('#addModal').modal('hide');
+                  // 提示信息为空
+                  $('#divResult').text('');
+                  doQuery();
+                }
+              })
+            });
             // 新增事件
             $('#model_add').click(function(){
               // 获取用户输入
               var Names = $('#categoryName').val();
               var Slugs = $('#categorySlug').val();
-              console.log(Names,Slugs);
+              // console.log(Names,Slugs);
               // 1判断用户输入内容不能为空
               if(Names === '' || Slugs === ''){
-                $('#divResult').text('分类名和别名不能为空!');
+                $('#divResult').text('分类名和别名不能为空!').show();
                 return;
               }
 

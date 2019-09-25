@@ -26,9 +26,13 @@ var category = {
             })
    },
 //    更新
-   edit : function(){
-
-   }
+   edit : function(id,name,slug,callBack){
+    $.post(
+        urList.category_edit,
+        {id:id,name:name,slug:slug},function(res){
+            callBack(res);
+        })
+   },
 
 
 };
