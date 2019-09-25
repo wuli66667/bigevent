@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./lib/jquery-1.12.4.min.js"></script>
 
 </head>
 
@@ -20,50 +20,111 @@
             用户信息修改
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="myForm">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
+                    <label for="userName" class="col-sm-2 control-label">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="李思思">
+                        <input type="text" class="form-control" id="userName" value="李思思" name="userName">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
+                    <label for="userNickname" class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="思思">
+                        <input type="text" class="form-control" id="userNickname" value="思思" name="nickname">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="userEmail" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="lisisi@126.com">
+                        <input type="text" class="form-control" id="userEmail" value="lisisi@126.com" name="email">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_pic">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/2.jpg" alt="" class="user_pic" id="previewImg">
+                        <input type="file" id="user_pic" name="user_pic"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
+                        <label for="userPassword" class="col-sm-2 control-label">密码：</label>
                         <div class="col-sm-4">
-                            <input type="password" class="form-control" id="inputEmail3" value="12345678">
+                            <input type="password" class="form-control" id="userPassword" value="12345678" name="password">
                         </div>
                     </div>
                
     
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="button" class="btn btn-success" id="btnSave">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- 引入js -->
+    <script src="./js/utils/conFi.js"></script>
+    <script src="./js/utils/uti.js"></script>
+    <script>
+    user.getInfo(function(res){
+        console.log(res);
+        // 昵称显示上去
+        if(res.code === 200){
+            //显示数据
+            $('#userName').val(res.data.nickname);
+            // $('#userNickname').val(res.data.);
+        }
+    });
+    
+    //修改部分
+    $('#btnSave').click(function(){
+        //使用fomData提交 在form加id myForm
+        // 创建一个对象
+        var fd = new FormData($('#myForm')[0]);
+        // // 发请求
+        // $.ajax({
+        //     type:'post',
+        //     data:fd,
+        //     url:'http://localhost:8000/admin/userinfo_edit',
+        //     contentType:false,//去掉请头
+        //     processData:false,
+        //     success:function(res){
+        //         // console.log(res);
+        //         // 点击成功判断
+        //         if(res.code === 200){
+        //                 callBack(res);
+        //         }
+        //     }
+        // })
+        user.editInfo(fd,function(res){
+            if(res.code === 200){
+                   alert(1);
+                }
+        });
+    });
+
+    //本地预览图片
+    $('#user_pic').change(function(){
+        console.log(this);
+        var file = this.files[0];
+        // 判断页面上有值判断
+        if(file){
+                 //创建临时的url
+       var tmpFilePath = URL.createObjectURL(file);
+    //    console.log(tmpFilePath);
+    //    显示在页面上
+        $('#previewImg').attr('src',tmpFilePath);
+        }else{
+            //放一个默认图片便是没选中
+            $('#previewImg').attr('src','./images/2.jpg');
+
+        }
+    });
+
+    </script>
 
 </body>
 

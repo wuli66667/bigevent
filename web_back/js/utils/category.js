@@ -1,5 +1,4 @@
 var category = {
-    
     // 显示
    show : function(callBack){
     // alert(1);

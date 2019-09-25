@@ -42,6 +42,21 @@ var user =  {
             // 'http://localhost:8000/admin/getuser',
             function(res){
             callBack(res);
-        })
+        });
+    },
+
+    // 修改用户信息
+    editInfo : function(fd,callBack){
+         // 发请求
+         $.ajax({
+            type:'post',
+            data:fd,
+            url: urList.user_editInfo,
+            contentType:false,//去掉请头
+            processData:false,
+            success:function(res){
+                callBack(res);
+            }
+        });
     }
 };

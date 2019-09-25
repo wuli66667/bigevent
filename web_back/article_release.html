@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>文章列表</title>
+    <title>写文章</title>
     <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <link type="text/css" rel="stylesheet" href="js/jedate/css/jedate.css">
-    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./lib/jquery-1.12.4.min.js"></script>
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
@@ -39,12 +39,12 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>1</option>
+                        <select class="form-control" id="categoryContent">
+                            <!-- <option>1</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
-                            <option>5</option>
+                            <option>5</option> -->
                         </select>
                     </div>
                 </div>
@@ -79,6 +79,31 @@
             </form>
         </div>
     </div>
+    
+    <script src="./js/utils/conFi.js"></script>
+    <script src="./js/utils/category.js"></script>
+    <script src="./lib/template-web.js"></script>
+
+    <!-- 使用模板引擎 -->
+    <script id="tmp" type="text/html">
+        {{each data item }}
+        <option>{{item.name}}</option>
+        {{/each}}
+    </script>
+    
+    <script>
+    $(function(){
+        category.show(function(res){
+            // console.log(res);
+            var htmlStr = template('tmp',res);
+            console.log(htmlStr);
+
+            // 把模板引擎的值放到上边原来的位置
+            $('#categoryContent').html(htmlStr);
+            
+        });
+    });
+    </script>
 
 </body>
 
