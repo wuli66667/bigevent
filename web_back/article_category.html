@@ -148,7 +148,7 @@
             <td class="text-center">
                 <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
                     class="btn btn-info btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:deleteTr( {{item.id}} );" class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
        {{/each}}
@@ -168,8 +168,28 @@
                 }
           }); 
         }
+        
+        
+        // 删除
+        function deleteTr(id){
+        //删除类型的id值
+        if(window.confirm('你要删除吗？'));
+          // 事件委托
+          // alert(id);
+          // 传参
+          category.del(id,function(res){
+            console.log('res');
+            // 判断===200重查一次
+            if(res.code === 200){
+              doQuery();
+            }
+          })
+        }
+        
+        
         //   入口函数
         $(function(){
+          //添加
             doQuery();
             // 新增事件
             $('#model_add').click(function(){
@@ -197,15 +217,11 @@
                   
                 }
                 // console.log(res);
-              })
+              });
+            });
           
-              
-        
 
-
-
-            })
-        });
+        });//入口函数
       </script>
 
 </body>

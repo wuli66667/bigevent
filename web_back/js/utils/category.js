@@ -10,23 +10,20 @@ var category = {
     });
    },
 //    添加
-//    add : function(name,slug,callBack){
-//     $.post(
-//         urList.user_category_add,
-//         {name:name,slug:slug},
-//         function(res){
-//         callBack(res);
-//     });
-
-//    },
     add: function(name,slug,callBack) {
-       $.post('http://localhost:8000/admin/category_add',{name:name,slug:slug},function(res){
+       $.post(
+        urList.category_add,{name:name,slug:slug},function(res){
         callBack(res);
        })
      },
-//    删除
-   del : function(){
 
+
+//    删除
+   del: function(id,callBack){
+        $.post(
+            urList.category_del,{id:id},function(res){
+                callBack(res); 
+            })
    },
 //    更新
    edit : function(){
